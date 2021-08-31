@@ -1,9 +1,11 @@
-import { IsNumber, IsString } from 'class-validator';
-import { EntryType } from '../enums/';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { EntryCategory } from '../enums/';
 
 export class CreateEntryDto {
-  @IsString()
-  type: EntryType;
+  @IsEnum(EntryCategory, {
+    message: 'Invalid option, only listed options are allowed',
+  })
+  type: EntryCategory;
   @IsString()
   content: string;
   @IsNumber()

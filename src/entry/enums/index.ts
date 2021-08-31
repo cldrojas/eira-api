@@ -1,1 +1,1 @@
-export * from './entry-type.enum';
+export * from './entry-category.enum';

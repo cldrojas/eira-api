@@ -1,4 +1,4 @@
-export enum EntryType {
+export enum EntryCategory {
   'Felicidad',
   'Miedo',
   'Enojo',
