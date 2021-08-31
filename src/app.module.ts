@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EntryModule } from './entry/entry.module';
@@ -6,7 +8,20 @@ import { EntryModule } from './entry/entry.module';
 //Orquestador de app
 
 @Module({
-  imports: [EntryModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'eira',
+      entities: [__dirname + `./**/**/*entity{.ts,.js}`],
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    EntryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
