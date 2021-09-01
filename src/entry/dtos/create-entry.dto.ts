@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { EntryCategory } from '../enums/';
 
 export class CreateEntryDto {
@@ -9,13 +9,10 @@ export class CreateEntryDto {
   content: string;
 
   @IsEnum(EntryCategory, {
-    message: 'Invalid option, only listed options are allowed',
+    message: 'Invalid category, only listed categories are allowed',
   })
   category: EntryCategory;
 
   @IsNumber()
   intensity: number;
-
-  @IsDate()
-  createdAt: Date;
 }

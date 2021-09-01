@@ -7,17 +7,18 @@ import {
   Put,
   Body,
 } from '@nestjs/common';
-import { CreateEntryDto } from './dtos';
-import { EditEntryDto } from './dtos/edit-entry.dto';
+import { CreateEntryDto, EditEntryDto } from './dtos';
 import { EntryService } from './entry.service';
 
-@Controller('entry') //ruta generada por el controller
+@Controller('entries') //ruta generada por el controller
 export class EntryController {
   constructor(private readonly entryService: EntryService) {}
+
   @Get()
-  getMany() {
-    return this.entryService.getMany();
+  async getMany() {
+    return await this.entryService.getMany();
   }
+
   @Get(':id')
   getOne(@Param('id') id: number) {
     return this.entryService.getOne(id);

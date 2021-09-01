@@ -10,17 +10,17 @@ export class Entry {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: false })
   userID: number;
 
   @Column({ type: 'varchar', length: 255 })
-  content: string;
+  content?: string;
 
   @Column({ type: 'varchar', length: 255 })
-  category: string;
+  category?: string;
 
   @Column({ type: 'int' })
-  intensity: number;
+  intensity?: number;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
