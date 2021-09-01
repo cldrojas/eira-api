@@ -5,5 +5,5 @@ export enum EntryCategory {
   'Tristeza',
   'Panico',
   'Dolor',
-  'Hapiness',
+  'Happiness',
 }
