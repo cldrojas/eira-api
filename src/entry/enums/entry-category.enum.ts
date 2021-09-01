@@ -4,4 +4,6 @@ export enum EntryCategory {
   'Enojo',
   'Tristeza',
   'Panico',
+  'Dolor',
+  'Happiness',
 }
