@@ -5,13 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EntryModule } from './entry/entry.module';
 
-import { EasyconfigModule } from 'nestjs-easyconfig';
-
+import 'dotenv';
 //Orquestador de app
 
 @Module({
   imports: [
-    EasyconfigModule.register({ path: '.env' }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.TYPEORM_HOST,
