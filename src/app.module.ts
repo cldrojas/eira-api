@@ -11,11 +11,11 @@ import { EntryModule } from './entry/entry.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'us-cdbr-east-04.cleardb.com',
-      port: 3306,
-      username: 'b1754fb2e2045a',
-      password: '028c0b8f',
-      database: 'heroku_5201e2f44bc5d2f',
+      host: process.env.TYPEORM_HOST,
+      port: Number.parseInt(process.env.TYPEORM_PORT),
+      username: process.env.TYPEORM_USERNAME,
+      password: process.env.TYPEORM_PASSWORD,
+      database: process.env.TYPEORM_DATABASE,
       entities: [__dirname + `./**/**/*entity{.ts,.js}`],
       autoLoadEntities: true,
       synchronize: true,
