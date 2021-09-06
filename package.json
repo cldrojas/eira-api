@@ -2,13 +2,14 @@
     "engines": {
         "node": "14.16.1"
     },
-    "name": "bitacora",
+    "name": "eira-api",
     "version": "0.0.1",
-    "description": "",
-    "author": "",
+    "description": "api to interact with eira medical logbook",
+    "author": "cld_rojas",
     "private": true,
     "license": "UNLICENSED",
     "scripts": {
+        "nesting": "nest build node dist/main",
         "prebuild": "rimraf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
