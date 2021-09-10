@@ -6,10 +6,12 @@ import { AppService } from './app.service';
 import { EntryModule } from './entry/entry.module';
 
 import 'dotenv';
+import { ConfigModule } from '@nestjs/config';
 //Orquestador de app
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.TYPEORM_HOST,
