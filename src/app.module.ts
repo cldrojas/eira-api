@@ -7,6 +7,7 @@ import { EntryModule } from './entry/entry.module';
 
 import 'dotenv';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 //Orquestador de app
 
 @Module({
@@ -24,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
     }),
     EntryModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
