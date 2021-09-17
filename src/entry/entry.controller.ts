@@ -15,27 +15,32 @@ export class EntryController {
   constructor(private readonly entryService: EntryService) {}
 
   @Get()
-  async getMany() {
-    return await this.entryService.getMany();
+  async get() {
+    const data = await this.entryService.get();
+    return { data };
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number) {
-    return this.entryService.getOne(id);
+  async getOne(@Param('id') id: number) {
+    const data = await this.entryService.getOne(id);
+    return { data };
   }
 
-  @Post(':id')
-  create(@Body() dto: CreateEntryDto) {
-    return this.entryService.create(dto);
+  @Post()
+  async create(@Body() dto: CreateEntryDto) {
+    const data = await this.entryService.create(dto);
+    return { message: 'Entry created', data };
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() dto: EditEntryDto) {
-    return this.entryService.update(id, dto);
+  async update(@Param('id') id: number, @Body() dto: EditEntryDto) {
+    const data = await this.entryService.update(id, dto);
+    return { message: 'Entry updated', data };
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.entryService.delete(id);
+  async delete(@Param('id') id: number) {
+    const data = await this.entryService.delete(id);
+    return { message: 'Entry deleted', data };
   }
 }

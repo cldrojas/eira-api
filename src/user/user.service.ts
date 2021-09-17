@@ -16,11 +16,11 @@ export class UserService {
   ) {}
 
   async get() {
-    await this.userRepository.find;
+    return await this.userRepository.find();
   }
   async getOne(id: number) {
     const user = await this.userRepository.findOne(id);
-    if (!user) throw new NotFoundException();
+    if (!user) throw new NotFoundException("There's no user with that id");
     return user;
   }
   async create(dto: CreateUserDto) {
