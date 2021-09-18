@@ -3,26 +3,31 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { EntryModule } from './entry/entry.module';
+import { UserModule } from './user/user.module';
 
 import 'dotenv';
-import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 //Orquestador de app
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.TYPEORM_HOST,
-      port: Number.parseInt(process.env.TYPEORM_PORT),
-      username: process.env.TYPEORM_USERNAME,
-      password: process.env.TYPEORM_PASSWORD,
-      database: process.env.TYPEORM_DATABASE,
-      entities: [__dirname + `./**/**/*entity{.ts,.js}`],
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.get<string>('TYPEORM_HOST'),
+        port: parseInt(config.get<string>('TYPEORM_PORT'), 10),
+        username: config.get<string>('TYPEORM_USERNAME'),
+        password: config.get<string>('TYPEORM_PASSWORD'),
+        database: config.get<string>('TYPEORM_DATABASE'),
+        entities: [__dirname + `./**/**/*entity{.ts,.js}`],
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
     EntryModule,
     UserModule,

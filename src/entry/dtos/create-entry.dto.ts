@@ -1,4 +1,6 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, IsEnum } from 'class-validator';
+import { EnumToString } from 'src/helpers/';
+import { EntryCategory } from '../enums';
 
 export class CreateEntryDto {
   @IsNumber()
@@ -7,7 +9,9 @@ export class CreateEntryDto {
   @IsString()
   content: string;
 
-  @IsString()
+  @IsEnum(EntryCategory, {
+    message: `invalid option. categories are: ${EnumToString(EntryCategory)}`,
+  })
   category: string;
 
   @IsNumber()
