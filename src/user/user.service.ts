@@ -15,14 +15,23 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async get() {
+  async getAll() {
     return await this.userRepository.find();
   }
-  async getOne(id: number) {
+  async findById(id: number) {
     const user = await this.userRepository.findOne(id);
     if (!user) throw new NotFoundException("There's no user with that id");
     return user;
   }
+
+  async findByEmail(email: string) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where({ email })
+      .addSelect('user.password')
+      .getOne();
+  }
+
   async create(dto: CreateUserDto) {
     const userExists = await this.userRepository.findOne({ email: dto.email });
     if (userExists) throw new BadRequestException('User already registered');
@@ -32,14 +41,14 @@ export class UserService {
     return user;
   }
   async edit(id: number, dto: EditUserDto) {
-    const user = await this.getOne(id);
+    const user = await this.findById(id);
     const editedUser = Object.assign(user, dto);
     const tempUser = await this.userRepository.save(editedUser);
     delete tempUser.password;
     return tempUser;
   }
   async delete(id: number) {
-    const user = await this.getOne(id);
+    const user = await this.findById(id);
     return await this.userRepository.remove(user);
   }
 }

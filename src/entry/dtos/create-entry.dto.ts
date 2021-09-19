@@ -1,5 +1,5 @@
 import { IsNumber, IsString, IsEnum } from 'class-validator';
-import { EnumToString } from 'src/helpers/';
+import { EnumToString } from 'src/common/helpers';
 import { EntryCategory } from '../enums';
 
 export class CreateEntryDto {

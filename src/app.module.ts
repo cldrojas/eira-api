@@ -9,8 +9,7 @@ import { UserModule } from './user/user.module';
 
 import 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
-//Orquestador de app
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,8 +28,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true,
       }),
     }),
-    EntryModule,
+    AuthModule,
     UserModule,
+    EntryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

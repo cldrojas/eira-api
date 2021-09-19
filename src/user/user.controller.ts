@@ -17,12 +17,12 @@ export class UserController {
 
   @Get()
   async get() {
-    const data = await this.userService.get();
+    const data = await this.userService.getAll();
     return { data };
   }
   @Get(':id')
   async getOne(@Param('id') id: number) {
-    const data = await this.userService.getOne(id);
+    const data = await this.userService.findById(id);
     return { data };
   }
   @Post()
