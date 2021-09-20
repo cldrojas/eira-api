@@ -40,6 +40,7 @@ export class UserService {
     delete user.password;
     return user;
   }
+
   async edit(id: number, dto: EditUserDto) {
     const user = await this.findById(id);
     const editedUser = Object.assign(user, dto);

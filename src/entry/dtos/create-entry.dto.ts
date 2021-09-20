@@ -10,7 +10,7 @@ export class CreateEntryDto {
   content: string;
 
   @IsEnum(EntryCategory, {
-    message: `invalid option. categories are: ${EnumToString(EntryCategory)}`,
+    message: `Invalid option. Categories are: ${EnumToString(EntryCategory)}`,
   })
   category: string;
 

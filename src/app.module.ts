@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AccessControlModule } from 'nest-access-control';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,8 +10,8 @@ import { EntryModule } from './entry/entry.module';
 import { UserModule } from './user/user.module';
 
 import 'dotenv';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { roles } from './app.roles';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
         synchronize: true,
       }),
     }),
+    AccessControlModule.forRoles(roles),
     AuthModule,
     UserModule,
     EntryModule,
