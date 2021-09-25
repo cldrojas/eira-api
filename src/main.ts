@@ -19,7 +19,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-
+  app.enableCors();
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
   logger.verbose(`Server running on ${await app.getUrl()}`);
 }
