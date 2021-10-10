@@ -1,7 +1,10 @@
+import { User } from 'src/user/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -9,9 +12,6 @@ import {
 export class Entry {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'user_id', type: 'int', nullable: false })
-  userID: number;
 
   @Column({ type: 'varchar', length: 255 })
   content: string;
@@ -24,4 +24,9 @@ export class Entry {
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ManyToOne((_) => User, (user) => user.entries, { eager: true })
+  @JoinColumn({ name: 'author' })
+  author: User;
 }

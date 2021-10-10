@@ -1,10 +1,12 @@
 import { hash } from 'bcryptjs';
+import { Entry } from 'src/entry/entities';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -42,4 +44,8 @@ export class User {
     }
     this.password = await hash(this.password, 10);
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @OneToOne((_) => Entry, (entry) => entry.author, { cascade: true })
+  entries: Entry;
 }

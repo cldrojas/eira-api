@@ -17,6 +17,7 @@ roles
   .grant(AppRoles.AUTHOR)
   .updateOwn([AppResources.USER])
   .deleteOwn([AppResources.USER])
+  .readOwn([AppResources.ENTRY])
   .createOwn([AppResources.ENTRY])
   .deleteOwn([AppResources.ENTRY])
   .updateOwn([AppResources.ENTRY])
