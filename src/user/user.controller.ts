@@ -25,10 +25,11 @@ export class UserController {
     private readonly rolesBuilder: RolesBuilder,
   ) {}
 
+  @Auth({ possession: 'any', action: 'read', resource: AppResources.USER })
   @Get()
   async get() {
     const data = await this.userService.getAll();
-    return { data };
+    return { message: 'User created', data };
   }
 
   @Get(':id')
@@ -76,12 +77,12 @@ export class UserController {
     return { message: 'User edited', data };
   }
 
-  @Auth({ action: 'delete', possession: 'own', resource: AppResources.USER })
+  @Auth({ possession: 'own', action: 'delete', resource: AppResources.USER })
   @Delete(':id')
   async delete(@Param('id') id: number, @User() user: UserEntity) {
     let data;
     if (
-      this.rolesBuilder.can(user.roles).updateAny(AppResources.USER).granted
+      this.rolesBuilder.can(user.roles).deleteAny(AppResources.USER).granted
     ) {
       //Admin privileges
       data = await this.userService.delete(id);
