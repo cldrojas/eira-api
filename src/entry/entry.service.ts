@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities';
 import { Repository } from 'typeorm';
@@ -13,15 +17,27 @@ export class EntryService {
     private readonly entryRepository: Repository<Entry>,
   ) {}
 
-  async get() {
-    return await this.entryRepository.find();
+  async get(author?: User) {
+    const list = await this.entryRepository
+      .createQueryBuilder('user')
+      .where({ author })
+      .addSelect('id')
+      .getMany();
+    return list;
+    /* .then(entry => (!author ? entry : !!entry && author.id ===  ? p : null)); */
   }
 
   async getOne(id: number, author?: User) {
     const entry = await this.entryRepository
       .findOne(id)
       .then((e) => (!author ? e : !!e && author.id === e.author.id ? e : null));
-    if (!entry) throw new NotFoundException("There's no entry with that id");
+
+    if (!author && !entry)
+      throw new NotFoundException("There's no entry with that id"); //404
+
+    if (author && !entry)
+      throw new UnauthorizedException("You're not allowed to see that!");
+
     return entry;
   }
 

@@ -24,12 +24,12 @@ export class EntryController {
 
   @Auth({ action: 'read', possession: 'own', resource: AppResources.ENTRY })
   @Get()
-  async get() {
-    const data = await this.entryService.get();
+  async get(@User() author: UserEntity) {
+    const data = await this.entryService.get(author);
     return { data };
   }
 
-  @Auth()
+  @Auth({ action: 'read', possession: 'own', resource: AppResources.ENTRY })
   @Get(':id')
   async getOne(@Param('id') id: number) {
     const data = await this.entryService.getOne(id);

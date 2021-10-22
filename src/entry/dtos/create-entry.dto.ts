@@ -3,9 +3,6 @@ import { EnumToString } from 'src/common/helpers';
 import { EntryCategory } from '../enums';
 
 export class CreateEntryDto {
-  @IsNumber()
-  userID: number;
-
   @IsString()
   content: string;
 
