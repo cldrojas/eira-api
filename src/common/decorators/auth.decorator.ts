@@ -4,5 +4,9 @@ import { ACGuard, Role, UseRoles } from 'nest-access-control';
 import { JwtGuard } from 'src/auth/guards';
 
 export function Auth(...roles: Role[]) {
-  return applyDecorators(UseGuards(JwtGuard, ACGuard),UseRoles(...roles), ApiBearerAuth());
+  return applyDecorators(
+    UseGuards(JwtGuard, ACGuard),
+    UseRoles(...roles),
+    ApiBearerAuth(),
+  );
 }

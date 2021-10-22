@@ -25,6 +25,7 @@ roles
   //*ADMIN ROLES
   .grant(AppRoles.ADMIN)
   .extend(AppRoles.AUTHOR)
+  .readAny([AppResources.USER, AppResources.ENTRY])
   .createAny([AppResources.USER])
   .updateAny([AppResources.USER, AppResources.ENTRY])
   .deleteAny([AppResources.USER, AppResources.ENTRY]);

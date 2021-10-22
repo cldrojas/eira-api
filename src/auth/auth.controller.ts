@@ -16,16 +16,16 @@ export class AuthController {
   }
 
   @Auth()
-  @Get('profile')
-  profile(@User() user: UserEntity) {
-    delete user.password;
-    return { message: 'Your profile', user };
-  }
-
-  @Auth()
   @Get('refresh')
   refresh(@User() user: UserEntity) {
     const data = this.authService.login(user);
     return { message: 'Refreshed token', data };
+  }
+
+  @Auth()
+  @Get('profile')
+  profile(@User() user: UserEntity) {
+    delete user.password;
+    return { message: 'Your profile', user };
   }
 }
