@@ -39,6 +39,7 @@
         "class-transformer": "^0.4.0",
         "class-validator": "^0.13.1",
         "dotenv": "^10.0.0",
+        "fastify-swagger": "^4.12.4",
         "mysql2": "^2.3.0",
         "nest-access-control": "^2.0.2",
         "passport": "^0.4.1",

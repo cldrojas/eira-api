@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AccessControlModule } from 'nest-access-control';
 
 import { AppController } from './app.controller';
@@ -12,23 +12,20 @@ import { UserModule } from './user/user.module';
 import 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { roles } from './app.roles';
+import { TYPEORM_CONFIG } from './config/constants';
+import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [databaseConfig],
+    }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'mysql',
-        host: config.get<string>('TYPEORM_HOST'),
-        port: parseInt(config.get<string>('TYPEORM_PORT'), 10),
-        username: config.get<string>('TYPEORM_USERNAME'),
-        password: config.get<string>('TYPEORM_PASSWORD'),
-        database: config.get<string>('TYPEORM_DATABASE'),
-        entities: [__dirname + `./**/**/*entity{.ts,.js}`],
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
+      useFactory: (config: ConfigService) =>
+        config.get<TypeOrmModuleOptions>(TYPEORM_CONFIG),
     }),
     AccessControlModule.forRoles(roles),
     AuthModule,
