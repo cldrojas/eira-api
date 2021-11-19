@@ -19,7 +19,7 @@ export class EntryService {
 
   async get(author?: User) {
     const list = await this.entryRepository
-      .createQueryBuilder('user')
+      .createQueryBuilder('entry')
       .where({ author })
       .addSelect('id')
       .getMany();
