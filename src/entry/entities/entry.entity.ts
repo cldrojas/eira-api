@@ -27,6 +27,6 @@ export class Entry {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToOne((_) => User, (user) => user.entries, { eager: true })
-  @JoinColumn({ name: 'author' })
+  @JoinColumn({ name: 'user_id' })
   author: User;
 }

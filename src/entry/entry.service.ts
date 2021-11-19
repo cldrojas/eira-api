@@ -15,7 +15,7 @@ export class EntryService {
   constructor(
     @InjectRepository(Entry)
     private readonly entryRepository: Repository<Entry>,
-  ) {}
+  ) { }
 
   async get(author?: User) {
     const list = await this.entryRepository
