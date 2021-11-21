@@ -14,7 +14,7 @@ function typeormModuleOptions(): TypeOrmModuleOptions {
     autoLoadEntities: true,
 
     migrationsRun: true,
-    migrations: [join(__dirname, 'src/migration/**/*{.ts, .js}')],
+    migrations: [join(__dirname, '../migration/**/*{.ts, .js}')],
     migrationsTableName: 'migrations_typeorm',
     cli: {
       migrationsDir: 'src/migration',
