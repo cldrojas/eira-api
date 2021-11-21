@@ -1,0 +1,23 @@
+{
+  "type": "mysql",
+  "host": "us-cdbr-east-04.cleardb.com",
+  "port": 3306,
+  "username": "b1754fb2e2045a",
+  "password": "028c0b8f",
+  "database": "heroku_5201e2f44bc5d2f",
+  "entities": [
+    "/mnt/d/dev/eira-api/dist/**/**/*entity{.ts,.js}"
+  ],
+  "autoLoadEntities": true,
+  "migrationsRun": true,
+  "migrations": [
+    "/mnt/d/dev/eira-api/dist/migration/**/*{.ts, .js}"
+  ],
+  "migrationsTableName": "migrations_typeorm",
+  "cli": {
+    "migrationsDir": "src/migration"
+  },
+  "synchronize": false,
+  "logging": true,
+  "logger": "file"
+}
