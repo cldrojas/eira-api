@@ -12,25 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateEntryDto = void 0;
 const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const enums_1 = require("../enums/");
+const helpers_1 = require("../../common/helpers");
+const enums_1 = require("../enums");
 class CreateEntryDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { userID: { required: true, type: () => Number }, content: { required: true, type: () => String }, category: { required: true, enum: require("../enums/entry-category.enum").EntryCategory }, intensity: { required: true, type: () => Number } };
+        return { content: { required: true, type: () => String }, category: { required: true, type: () => String }, intensity: { required: true, type: () => Number } };
     }
 }
-__decorate([
-    class_validator_1.IsNumber(),
-    __metadata("design:type", Number)
-], CreateEntryDto.prototype, "userID", void 0);
 __decorate([
     class_validator_1.IsString(),
     __metadata("design:type", String)
 ], CreateEntryDto.prototype, "content", void 0);
 __decorate([
     class_validator_1.IsEnum(enums_1.EntryCategory, {
-        message: 'Invalid category, only listed categories are allowed',
+        message: `Invalid option. Categories are: ${helpers_1.EnumToString(enums_1.EntryCategory)}`,
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], CreateEntryDto.prototype, "category", void 0);
 __decorate([
     class_validator_1.IsNumber(),

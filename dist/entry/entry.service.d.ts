@@ -1,13 +1,13 @@
+import { User } from 'src/user/entities';
 import { Repository } from 'typeorm';
-import { CreateEntryDto } from './dtos';
-import { EditEntryDto } from './dtos/edit-entry.dto';
-import { Entry } from './entities/entry.entity';
+import { CreateEntryDto, EditEntryDto } from './dtos';
+import { Entry } from './entities';
 export declare class EntryService {
     private readonly entryRepository;
     constructor(entryRepository: Repository<Entry>);
-    getMany(): Promise<Entry[]>;
-    getOne(id: number): Promise<Entry>;
-    create(dto: CreateEntryDto): Promise<Entry[]>;
-    update(id: number, dto: EditEntryDto): Promise<Entry & EditEntryDto>;
-    delete(id: number): Promise<import("typeorm").DeleteResult>;
+    get(author?: User): Promise<Entry[]>;
+    getOne(id: number, author?: User): Promise<Entry>;
+    create(dto: CreateEntryDto, author: User): Promise<Entry>;
+    update(id: number, dto: EditEntryDto, author?: User): Promise<Entry & EditEntryDto>;
+    delete(id: number, author?: User): Promise<Entry>;
 }

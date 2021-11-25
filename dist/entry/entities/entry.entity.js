@@ -11,20 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entry = void 0;
 const openapi = require("@nestjs/swagger");
+const entities_1 = require("../../user/entities");
 const typeorm_1 = require("typeorm");
 let Entry = class Entry {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, userID: { required: true, type: () => Number }, content: { required: false, type: () => String }, category: { required: false, type: () => String }, intensity: { required: false, type: () => Number }, createdAt: { required: true, type: () => Date } };
+        return { id: { required: true, type: () => Number }, content: { required: true, type: () => String }, category: { required: true, type: () => String }, intensity: { required: true, type: () => Number }, createdAt: { required: true, type: () => Date }, author: { required: true, type: () => require("../../user/entities/user.entity").User } };
     }
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
 ], Entry.prototype, "id", void 0);
-__decorate([
-    typeorm_1.Column({ type: 'int', nullable: false }),
-    __metadata("design:type", Number)
-], Entry.prototype, "userID", void 0);
 __decorate([
     typeorm_1.Column({ type: 'varchar', length: 255 }),
     __metadata("design:type", String)
@@ -38,9 +35,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Entry.prototype, "intensity", void 0);
 __decorate([
-    typeorm_1.CreateDateColumn({ type: 'timestamp' }),
+    typeorm_1.CreateDateColumn({ name: 'created_at', type: 'timestamp' }),
     __metadata("design:type", Date)
 ], Entry.prototype, "createdAt", void 0);
+__decorate([
+    typeorm_1.ManyToOne((_) => entities_1.User, (user) => user.entries, { eager: true }),
+    typeorm_1.JoinColumn({ name: 'author' }),
+    __metadata("design:type", entities_1.User)
+], Entry.prototype, "author", void 0);
 Entry = __decorate([
     typeorm_1.Entity('entries')
 ], Entry);

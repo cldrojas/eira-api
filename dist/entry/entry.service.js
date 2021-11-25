@@ -15,41 +15,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EntryService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const entities_1 = require("../user/entities");
 const typeorm_2 = require("typeorm");
-const entry_entity_1 = require("./entities/entry.entity");
+const entities_2 = require("./entities");
 let EntryService = class EntryService {
     constructor(entryRepository) {
         this.entryRepository = entryRepository;
     }
-    async getMany() {
-        return await this.entryRepository.find();
+    async get(author) {
+        return await this.entryRepository
+            .createQueryBuilder('entry')
+            .where({ author })
+            .getMany();
     }
-    async getOne(id) {
-        const entry = await this.entryRepository.findOne(id);
-        if (!entry)
+    async getOne(id, author) {
+        const entry = await this.entryRepository
+            .findOne(id)
+            .then((e) => (!author ? e : !!e && author.id === e.author.id ? e : null));
+        if (!author && !entry)
             throw new common_1.NotFoundException("There's no entry with that id");
+        if (author && !entry)
+            throw new common_1.UnauthorizedException("You're not allowed to see that!");
         return entry;
     }
-    async create(dto) {
-        const entry = this.entryRepository.create(dto);
+    async create(dto, author) {
+        const entry = this.entryRepository.create(Object.assign(Object.assign({}, dto), { author }));
         return await this.entryRepository.save(entry);
     }
-    async update(id, dto) {
-        const entry = await this.entryRepository.findOne(id);
-        console.log('encontre: ', entry);
-        if (!entry)
-            throw new common_1.NotFoundException("There's no entry with that id");
+    async update(id, dto, author) {
+        const entry = await this.getOne(id, author);
         const editedEntry = Object.assign(entry, dto);
-        console.log('editado queda: ', editedEntry);
         return await this.entryRepository.save(editedEntry);
     }
-    async delete(id) {
-        return await this.entryRepository.delete(id);
+    async delete(id, author) {
+        const entry = await this.getOne(id, author);
+        return await this.entryRepository.remove(entry);
     }
 };
 EntryService = __decorate([
     common_1.Injectable(),
-    __param(0, typeorm_1.InjectRepository(entry_entity_1.Entry)),
+    __param(0, typeorm_1.InjectRepository(entities_2.Entry)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], EntryService);
 exports.EntryService = EntryService;

@@ -18,11 +18,11 @@ export class EntryService {
   ) { }
 
   async get(author?: User) {
-    const list = await this.entryRepository
+
+    return await this.entryRepository
       .createQueryBuilder('entry')
       .where({ author })
-      .getMany()
-    return list;
+      .getMany();
     /* .then(entry => (!author ? entry : !!entry && author.id ===  ? p : null)); */
   }
 

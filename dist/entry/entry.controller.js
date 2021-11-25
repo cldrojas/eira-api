@@ -15,71 +15,99 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EntryController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const nest_access_control_1 = require("nest-access-control");
+const app_roles_1 = require("../app.roles");
+const decorators_1 = require("../common/decorators");
+const entities_1 = require("../user/entities");
 const dtos_1 = require("./dtos");
 const entry_service_1 = require("./entry.service");
 let EntryController = class EntryController {
-    constructor(entryService) {
+    constructor(entryService, rolesBuilder) {
         this.entryService = entryService;
+        this.rolesBuilder = rolesBuilder;
     }
-    async getMany() {
-        return await this.entryService.getMany();
+    async get(author) {
+        const data = await this.entryService.get(author);
+        return { data };
     }
-    getOne(id) {
-        return this.entryService.getOne(id);
+    async getOne(id) {
+        const data = await this.entryService.getOne(id);
+        return { data };
     }
-    create(dto) {
-        return this.entryService.create(dto);
+    async create(dto, author) {
+        const data = await this.entryService.create(dto, author);
+        return { message: 'Entry created', data };
     }
-    update(id, dto) {
-        return this.entryService.update(id, dto);
+    async update(id, dto, author) {
+        let data;
+        if (this.rolesBuilder.can(author.roles).updateAny(app_roles_1.AppResources.ENTRY).granted) {
+            data = await this.entryService.update(id, dto);
+        }
+        else {
+            data = await this.entryService.update(id, dto, author);
+        }
+        return { message: 'Entry updated', data };
     }
-    delete(id) {
-        return this.entryService.delete(id);
+    async delete(id, author) {
+        const data = await this.entryService.delete(id, author);
+        return { message: 'Entry deleted', data };
     }
 };
 __decorate([
+    decorators_1.Auth({ action: 'read', possession: 'own', resource: app_roles_1.AppResources.ENTRY }),
     common_1.Get(),
-    openapi.ApiResponse({ status: 200, type: [require("./entities/entry.entity").Entry] }),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, decorators_1.User()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [entities_1.User]),
     __metadata("design:returntype", Promise)
-], EntryController.prototype, "getMany", null);
+], EntryController.prototype, "get", null);
 __decorate([
+    decorators_1.Auth({ action: 'read', possession: 'own', resource: app_roles_1.AppResources.ENTRY }),
     common_1.Get(':id'),
-    openapi.ApiResponse({ status: 200, type: require("./entities/entry.entity").Entry }),
-    __param(0, common_1.Param('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], EntryController.prototype, "getOne", null);
-__decorate([
-    common_1.Post(':id'),
-    openapi.ApiResponse({ status: 201, type: [require("./entities/entry.entity").Entry] }),
-    __param(0, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dtos_1.CreateEntryDto]),
-    __metadata("design:returntype", void 0)
-], EntryController.prototype, "create", null);
-__decorate([
-    common_1.Put(':id'),
-    openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, common_1.Param('id')),
-    __param(1, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, dtos_1.EditEntryDto]),
-    __metadata("design:returntype", void 0)
-], EntryController.prototype, "update", null);
-__decorate([
-    common_1.Delete(':id'),
     openapi.ApiResponse({ status: 200 }),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
+], EntryController.prototype, "getOne", null);
+__decorate([
+    decorators_1.Auth({ action: 'create', possession: 'own', resource: app_roles_1.AppResources.ENTRY }),
+    common_1.Post(),
+    openapi.ApiResponse({ status: 201 }),
+    __param(0, common_1.Body()),
+    __param(1, decorators_1.User()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dtos_1.CreateEntryDto, entities_1.User]),
+    __metadata("design:returntype", Promise)
+], EntryController.prototype, "create", null);
+__decorate([
+    decorators_1.Auth({ action: 'update', possession: 'own', resource: app_roles_1.AppResources.ENTRY }),
+    common_1.Put(':id'),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, common_1.Param('id')),
+    __param(1, common_1.Body()),
+    __param(2, decorators_1.User()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, dtos_1.EditEntryDto,
+        entities_1.User]),
+    __metadata("design:returntype", Promise)
+], EntryController.prototype, "update", null);
+__decorate([
+    decorators_1.Auth({ action: 'delete', possession: 'own', resource: app_roles_1.AppResources.ENTRY }),
+    common_1.Delete(':id'),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, common_1.Param('id')),
+    __param(1, decorators_1.User()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, entities_1.User]),
+    __metadata("design:returntype", Promise)
 ], EntryController.prototype, "delete", null);
 EntryController = __decorate([
     common_1.Controller('entries'),
-    __metadata("design:paramtypes", [entry_service_1.EntryService])
+    __param(1, nest_access_control_1.InjectRolesBuilder()),
+    __metadata("design:paramtypes", [entry_service_1.EntryService,
+        nest_access_control_1.RolesBuilder])
 ], EntryController);
 exports.EntryController = EntryController;
 //# sourceMappingURL=entry.controller.js.map
